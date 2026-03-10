@@ -1,0 +1,71 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    background-color: #09090b;
+    color: #f4f4f5;
+    font-family: "Poppins", sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #18181b;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #3f3f46;
+    border-radius: 3px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #f97316;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-brand text-white font-body text-sm font-medium px-5 py-2.5 rounded-xl
+           hover:bg-brand-light active:bg-brand-dark transition-all duration-200
+           disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-2
+           shadow-md hover:shadow-glow;
+  }
+  .btn-ghost {
+    @apply bg-zinc-800/70 text-zinc-300 font-body text-sm px-5 py-2.5 rounded-xl
+           hover:bg-zinc-700 transition-all duration-200 flex items-center gap-2
+           backdrop-blur-sm border border-zinc-700/50;
+  }
+  .btn-danger {
+    @apply bg-red-600/90 text-white font-body text-sm px-5 py-2.5 rounded-xl
+           hover:bg-red-500 transition-all duration-200 flex items-center gap-2;
+  }
+  .input-field {
+    @apply w-full bg-zinc-900/80 border border-zinc-700/60 rounded-xl px-4 py-2.5 text-sm text-zinc-100
+           placeholder-zinc-500 focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand/30
+           transition-all duration-200 backdrop-blur-sm;
+  }
+  .label {
+    @apply block text-xs text-zinc-400 mb-1.5 uppercase tracking-wider font-medium;
+  }
+  .card {
+    @apply bg-zinc-900/60 border border-zinc-800/60 rounded-2xl p-6
+           backdrop-blur-md shadow-card transition-all duration-300;
+  }
+  .badge-available {
+    @apply inline-flex items-center gap-1.5 bg-emerald-900/40 text-emerald-400
+           border border-emerald-800/50 text-xs px-2.5 py-1 rounded-full font-medium;
+  }
+  .badge-rented {
+    @apply inline-flex items-center gap-1.5 bg-orange-900/40 text-orange-400
+           border border-orange-800/50 text-xs px-2.5 py-1 rounded-full font-medium;
+  }
+  .badge-maintenance {
+    @apply inline-flex items-center gap-1.5 bg-red-900/40 text-red-400
+           border border-red-800/50 text-xs px-2.5 py-1 rounded-full font-medium;
+  }
+}
