@@ -3,7 +3,7 @@ import axios from "axios";
 const api = axios.create({
   baseURL: process.env.REACT_APP_API_URL || "http://localhost:3000/api",
   headers: { "Content-Type": "application/json" },
-  withCredentials: true, // Để gửi cookies
+  withCredentials: true,
 });
 
 // ── Interceptor: Thêm token vào header ──
@@ -20,21 +20,29 @@ api.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
+    const requestUrl = originalRequest.url;
 
-    if (error.response?.status === 401 && !originalRequest._retry) {
+    // ✅ FIX: Không refresh token cho các endpoint auth
+    const authEndpoints = ["/auth/login", "/auth/register", "/auth/logout"];
+    const isAuthEndpoint = authEndpoints.some((endpoint) =>
+      requestUrl.includes(endpoint)
+    );
+
+    if (
+      error.response?.status === 401 &&
+      !originalRequest._retry &&
+      !isAuthEndpoint // ← Thêm điều kiện này
+    ) {
       originalRequest._retry = true;
 
       try {
-        // Thử refresh token
         const response = await api.post("/auth/refresh");
         const { accessToken } = response.data;
         localStorage.setItem("accessToken", accessToken);
 
-        // Retry request cũ
         originalRequest.headers.Authorization = `Bearer ${accessToken}`;
         return api(originalRequest);
       } catch (refreshError) {
-        // Refresh failed, logout user
         localStorage.removeItem("accessToken");
         localStorage.removeItem("user");
         window.location.href = "/auth/login";
